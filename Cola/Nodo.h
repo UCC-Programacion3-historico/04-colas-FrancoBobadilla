@@ -1,7 +1,3 @@
-//
-// Created by martin on 13/09/17.
-//
-
 #ifndef INC_04_COLA_NODO_H
 #define INC_04_COLA_NODO_H
 

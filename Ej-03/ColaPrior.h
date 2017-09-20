@@ -1,21 +1,18 @@
-#ifndef COLA_H
-#define COLA_H
+#ifndef INC_04_COLA_COLAPRIOR_H
+#define INC_04_COLA_COLAPRIOR_H
 
-
-#include "Nodo.h"
+#include "NodoPrior.h"
 
 template<class T>
 class Cola {
 private:
-    Nodo<T> *frente;
-    Nodo<T> *fondo;
-
+    NodoPrior<T> *frente;
 public:
     Cola();
 
     ~Cola();
 
-    void encolar(T dato);
+    void encolar(T dato, int prioridad);
 
     T desencolar();
 
@@ -28,7 +25,7 @@ public:
 
 template<class T>
 Cola<T>::Cola() {
-    fondo = frente = NULL;
+    frente = NULL;
 }
 
 template<class T>
@@ -37,11 +34,18 @@ Cola<T>::~Cola() {
 }
 
 template<class T>
-void Cola<T>::encolar(T dato) {
-    if (fondo == NULL && frente == NULL) {
-        frente = fondo = new Nodo<T>(dato);
+void Cola<T>::encolar(T dato, int prioridad) {
+    if (frente == NULL) {
+        frente = new NodoPrior<T>(dato, prioridad);
     } else {
-        fondo->setNext(new Nodo<T>(dato));
+        NodoPrior<T> *aux = frente;
+        if (frente->getPrioridad() > prioridad) {
+            frente = new NodoPrior(dato, prioridad, aux);
+        } else {
+            while (aux->getNext() != NULL && aux->getNext()->getPrioridad() <= prioridad)
+                aux = aux->getNext();
+            aux->setNext(new NodoPrior<T>(dato, prioridad, aux->getNext()));
+        }
     }
 }
 
@@ -49,12 +53,10 @@ template<class T>
 T Cola<T>::desencolar() {
     if (esVacia()) throw 1;
     T tmp;
-    Nodo<T> *aux = frente;
+    NodoPrior<T> *aux = frente;
     frente = frente->getNext();
     tmp = aux->getDato();
     delete aux;
-    /*if (frente == NULL)
-        fondo = NULL;*/
     return tmp;
 }
 
@@ -78,4 +80,4 @@ T Cola<T>::verFrente() {
 }
 
 
-#endif //LISTA_H
+#endif //INC_04_COLA_COLAPRIOR_H
