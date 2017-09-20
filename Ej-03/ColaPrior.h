@@ -4,13 +4,13 @@
 #include "NodoPrior.h"
 
 template<class T>
-class Cola {
+class ColaPrior {
 private:
     NodoPrior<T> *frente;
 public:
-    Cola();
+    ColaPrior();
 
-    ~Cola();
+    ~ColaPrior();
 
     void encolar(T dato, int prioridad);
 
@@ -21,26 +21,28 @@ public:
     void vaciar();
 
     T verFrente();
+
+    int verPrioridad();
 };
 
 template<class T>
-Cola<T>::Cola() {
+ColaPrior<T>::ColaPrior() {
     frente = NULL;
 }
 
 template<class T>
-Cola<T>::~Cola() {
+ColaPrior<T>::~ColaPrior() {
     vaciar();
 }
 
 template<class T>
-void Cola<T>::encolar(T dato, int prioridad) {
+void ColaPrior<T>::encolar(T dato, int prioridad) {
     if (frente == NULL) {
         frente = new NodoPrior<T>(dato, prioridad);
     } else {
         NodoPrior<T> *aux = frente;
         if (frente->getPrioridad() > prioridad) {
-            frente = new NodoPrior(dato, prioridad, aux);
+            frente = new NodoPrior<T>(dato, prioridad, aux);
         } else {
             while (aux->getNext() != NULL && aux->getNext()->getPrioridad() <= prioridad)
                 aux = aux->getNext();
@@ -50,7 +52,7 @@ void Cola<T>::encolar(T dato, int prioridad) {
 }
 
 template<class T>
-T Cola<T>::desencolar() {
+T ColaPrior<T>::desencolar() {
     if (esVacia()) throw 1;
     T tmp;
     NodoPrior<T> *aux = frente;
@@ -61,12 +63,12 @@ T Cola<T>::desencolar() {
 }
 
 template<class T>
-bool Cola<T>::esVacia() {
+bool ColaPrior<T>::esVacia() {
     return frente == NULL;
 }
 
 template<class T>
-void Cola<T>::vaciar() {
+void ColaPrior<T>::vaciar() {
 
     while (frente != NULL)
         desencolar();
@@ -74,9 +76,15 @@ void Cola<T>::vaciar() {
 }
 
 template<class T>
-T Cola<T>::verFrente() {
+T ColaPrior<T>::verFrente() {
     if (esVacia()) throw 1;
     return frente->getDato();
+}
+
+template<class T>
+int ColaPrior<T>::verPrioridad() {
+    if (esVacia()) throw 1;
+    return frente->getPrioridad();
 }
 
 
